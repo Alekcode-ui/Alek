@@ -5,7 +5,7 @@
 
 $ErrorActionPreference = "Stop"
 
-$REPO_USER   = "SEU_USUARIO"          # <- troca pelo seu usuario do GitHub
+$REPO_USER   = "Alekcode-ui"          # <- troca pelo seu usuario do GitHub
 $REPO_NAME   = "alek"
 $RAW_BASE    = "https://raw.githubusercontent.com/$REPO_USER/$REPO_NAME/main"
 $INSTALL_DIR = "$env:USERPROFILE\.alek"
