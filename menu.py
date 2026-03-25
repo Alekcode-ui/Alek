@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os
 import sys
 import time
@@ -176,10 +176,11 @@ def menu_principal():
         elif op == "3": menu_rede()
         elif op == "4": opcao_sobre()
         elif op == "0": sair()
-        elif op == "WW":  # easter egg
-
-
-
+        elif op.upper() == "WW": segredo_ww()
+        else:
+            print(f"\n  {DRED}\u26a0  Opcao invalida.{R}")
+            time.sleep(1.1)
+       
 # ══════════════════════════════════════════
 #  SUBMENU REDE / HACKING
 # ══════════════════════════════════════════
@@ -370,6 +371,30 @@ def opcao_sobre():
     ]:
         print(f"  {SEPIA}{k:<12}{R}{CREAM}{v}{R}")
     print(f"\n  {GRAY}Menu interativo com estilo.{R}")
+    pausar()
+
+
+# ══════════════════════════════════════════
+#  FUNCAO SECRETA  —  WW
+# ══════════════════════════════════════════
+def segredo_ww():
+    limpar()
+    exibir_banner()
+    sep()
+    print()
+    morse = "--. .. - / .... ..- -... / .- .-.. . -.- -.-. --- -.. . -....- ..- .."
+    print(f"  {AMBER}[ W W ]{R}")
+    print()
+    for ch in morse:
+        import sys, time
+        sys.stdout.write(f"{AMBL}{ch}{R}")
+        sys.stdout.flush()
+        time.sleep(0.07)
+    print()
+    print()
+    sep()
+    digitar(f"  {SEPIA}\"--. .. - / .... ..- -... / .- .-.. . -.- -.-. --- -.. . -....- ..- ..\"  {R}", delay=0.03)
+    sep()
     pausar()
 
 def sair():
