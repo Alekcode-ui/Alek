@@ -177,16 +177,7 @@ def menu_principal():
         elif op == "4": opcao_sobre()
         elif op == "0": sair()
         elif op == "WW":  # easter egg
-            limpar(); exibir_banner(); sep()
-            print(f"  {BOLD}{AMBER}Powerd By alek{R}\n")
-            exibir_heisenberg()
-            digitar(f"\n  {SEPIA}\"--. .. - / .... ..- -... / .- .-.. . -.- -.-. --- -.. . -....- ..- .."{R}", delay=0.032)
-            sep()
-            print()
-            input(f"  {AMBL}[ pressione ENTER para voltar... ]{R}")
-        else:
-            print(f"\n  {DRED}⚠  Opção inválida.{R}")
-            time.sleep(1.1)
+
 
 
 # ══════════════════════════════════════════
