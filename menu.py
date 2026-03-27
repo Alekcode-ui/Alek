@@ -30,9 +30,6 @@ DRED   = "\033[38;2;150;35;35m"
 GREEN  = "\033[38;2;80;180;80m"
 BOLD   = "\033[1m"
 
-# ══════════════════════════════════════════
-#  PIXEL ART  —  ALEK
-# ══════════════════════════════════════════
 ON  = AMBL + "██" + R
 OFF = "  "
 
@@ -58,14 +55,9 @@ def exibir_banner():
     print(f"  {AMBER}║{'':^{BI}}║{R}")
     print(f"  {AMBER}╚{'═'*BI}╝{R}\n")
 
-
-# ══════════════════════════════════════════
-#  HEISENBERG
-# ══════════════════════════════════════════
 def exibir_heisenberg():
     G = GRAY
     A = AMBER
-    S = SEPIA
     arte = [
         "                          -+****##%@@*                      ",
         "                @@@@*+++**##***#*##%%@#%@@@@@@*             ",
@@ -113,10 +105,6 @@ def exibir_heisenberg():
         print(f"{A}{l}{G}")
     print(f"{G}")
 
-
-# ══════════════════════════════════════════
-#  UTILITÁRIOS
-# ══════════════════════════════════════════
 def limpar():
     os.system("cls" if os.name == "nt" else "clear")
 
@@ -133,10 +121,6 @@ def sep():
 def pausar():
     input(f"\n  {GRAY}[ pressione ENTER para voltar... ]{R}")
 
-
-# ══════════════════════════════════════════
-#  ABERTURA
-# ══════════════════════════════════════════
 def tela_abertura():
     limpar()
     exibir_banner()
@@ -144,20 +128,15 @@ def tela_abertura():
     print()
     exibir_heisenberg()
     sep()
-    digitar(f"  {SEPIA}\"Eu não estou em perigo. EU sou o perigo.\"{R}", delay=0.032)
+    digitar(f"  {SEPIA}\"Eu nao estou em perigo. EU sou o perigo.\"{R}", delay=0.032)
     sep()
     print()
     input(f"  {AMBL}[ pressione ENTER para entrar... ]{R}")
 
-
-# ══════════════════════════════════════════
-#  MENU PRINCIPAL
-# ══════════════════════════════════════════
 def menu_principal():
     while True:
         limpar()
         exibir_banner()
-
         w = 49
         print(f"  {AMBER}╔{'═'*w}╗{R}")
         print(f"  {AMBER}║{CREAM}{'  MENU PRINCIPAL — ALEK v1.0':^{w}}{AMBER}║{R}")
@@ -165,30 +144,99 @@ def menu_principal():
         print(f"  {AMBER}║  {AMBL}1{AMBER}  →  {CREAM}Testar conexão / ping        {AMBER}║{R}")
         print(f"  {AMBER}║  {AMBL}2{AMBER}  →  {CREAM}Informações do sistema       {AMBER}║{R}")
         print(f"  {AMBER}║  {AMBL}3{AMBER}  →  {CREAM}Rede                         {AMBER}║{R}")
-        print(f"  {AMBER}║  {AMBL}4{AMBER}  →  {CREAM}Sobre o programa             {AMBER}║{R}")
+        print(f"  {AMBER}║  {AMBL}4{AMBER}  →  {CREAM}Baixar vídeo do YouTube      {AMBER}║{R}")
+        print(f"  {AMBER}║  {AMBL}5{AMBER}  →  {CREAM}Sobre o programa             {AMBER}║{R}")
         print(f"  {AMBER}║  {DRED}0{AMBER}  →  {CREAM}Sair                         {AMBER}║{R}")
         print(f"  {AMBER}╚{'═'*w}╝{R}")
         sep()
-
         op = input(f"  {AMBL}Escolha: {R}").strip()
         if   op == "1": opcao_ping()
         elif op == "2": opcao_sistema()
         elif op == "3": menu_rede()
-        elif op == "4": opcao_sobre()
+        elif op == "4": opcao_youtube()
+        elif op == "5": opcao_sobre()
         elif op == "0": sair()
         elif op.upper() == "WW": segredo_ww()
         else:
-            print(f"\n  {DRED}\u26a0  Opcao invalida.{R}")
+            print(f"\n  {DRED}⚠  Opcao invalida.{R}")
             time.sleep(1.1)
-       
+
 # ══════════════════════════════════════════
-#  SUBMENU REDE / HACKING
+#  YOUTUBE DOWNLOADER
+# ══════════════════════════════════════════
+def opcao_youtube():
+    limpar(); exibir_banner(); sep()
+    print(f"  {BOLD}{AMBER}BAIXAR VIDEO DO YOUTUBE{R}\n")
+
+    # Verifica se pytubefix esta instalado
+    try:
+        from pytubefix import YouTube
+        from pytubefix.cli import on_progress
+    except ImportError:
+        print(f"  {DRED}pytubefix nao encontrado. Instalando...{R}\n")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "pytubefix"])
+        try:
+            from pytubefix import YouTube
+            from pytubefix.cli import on_progress
+        except ImportError:
+            print(f"  {DRED}Erro ao instalar pytubefix.{R}")
+            pausar(); return
+
+    url = input(f"  {CREAM}Cole o link do YouTube: {R}").strip()
+    if not url:
+        print(f"  {DRED}URL inválida.{R}")
+        pausar(); return
+
+    print(f"\n  {GRAY}Buscando informações do vídeo...{R}\n")
+
+    try:
+        yt = YouTube(url, on_progress_callback=on_progress)
+        print(f"  {SEPIA}Título   :{R} {CREAM}{yt.title}{R}")
+        print(f"  {SEPIA}Duração  :{R} {CREAM}{yt.length // 60}m {yt.length % 60}s{R}")
+        print(f"  {SEPIA}Autor    :{R} {CREAM}{yt.author}{R}")
+        print()
+        sep()
+        print(f"\n  {AMBER}Escolha o formato:{R}")
+        print(f"  {AMBL}1{R} → MP4 - Melhor qualidade")
+        print(f"  {AMBL}2{R} → MP3 - Só o áudio")
+        print(f"  {DRED}0{R} → Cancelar")
+        print()
+
+        fmt = input(f"  {AMBL}Escolha: {R}").strip()
+
+        # Pasta de destino: Downloads do usuário
+        pasta = os.path.join(os.path.expanduser("~"), "Downloads")
+
+        if fmt == "1":
+            print(f"\n  {GRAY}Baixando vídeo...{R}\n")
+            stream = yt.streams.get_highest_resolution()
+            stream.download(output_path=pasta)
+            print(f"\n  {GREEN}Download concluído!{R}")
+            print(f"  {SEPIA}Salvo em:{R} {CREAM}{pasta}{R}")
+
+        elif fmt == "2":
+            print(f"\n  {GRAY}Baixando áudio...{R}\n")
+            stream = yt.streams.get_audio_only()
+            arquivo = stream.download(output_path=pasta, filename=f"{yt.title}.mp3")
+            print(f"\n  {GREEN}Download concluído!{R}")
+            print(f"  {SEPIA}Salvo em:{R} {CREAM}{arquivo}{R}")
+
+        elif fmt == "0":
+            return
+        else:
+            print(f"  {DRED}Opção inválida.{R}")
+
+    except Exception as e:
+        print(f"\n  {DRED}Erro: {e}{R}")
+
+    pausar()
+
+# ══════════════════════════════════════════
+#  SUBMENU REDE
 # ══════════════════════════════════════════
 def menu_rede():
     while True:
-        limpar()
-        exibir_banner()
-
+        limpar(); exibir_banner()
         w = 49
         print(f"  {AMBER}╔{'═'*w}╗{R}")
         print(f"  {AMBER}║{CREAM}{'  REDE / HACKING':^{w}}{AMBER}║{R}")
@@ -200,7 +248,6 @@ def menu_rede():
         print(f"  {AMBER}║  {DRED}0{AMBER}  →  {CREAM}Voltar                                 {AMBER}║{R}")
         print(f"  {AMBER}╚{'═'*w}╝{R}")
         sep()
-
         op = input(f"  {AMBL}Escolha: {R}").strip()
         if   op == "1": rede_ip()
         elif op == "2": rede_scanner()
@@ -211,27 +258,17 @@ def menu_rede():
             print(f"\n  {DRED}⚠  Opção inválida.{R}")
             time.sleep(1.1)
 
-
-# ──────────────────────────────────────────
-#  1. VER IP LOCAL E EXTERNO
-# ──────────────────────────────────────────
 def rede_ip():
     limpar(); exibir_banner(); sep()
     print(f"  {BOLD}{AMBER}VER IP LOCAL E EXTERNO{R}\n")
-
-    # IP local
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         ip_local = s.getsockname()[0]
         s.close()
     except Exception:
-        ip_local = "Não foi possível obter"
-
-    # Hostname
+        ip_local = "Nao foi possivel obter"
     hostname = socket.gethostname()
-
-    # IP externo via curl/powershell
     try:
         if os.name == "nt":
             resultado = subprocess.check_output(
@@ -239,107 +276,63 @@ def rede_ip():
                 timeout=5, stderr=subprocess.DEVNULL
             ).decode().strip()
         else:
-            resultado = subprocess.check_output(
-                ["curl", "-s", "https://api.ipify.org"],
-                timeout=5
-            ).decode().strip()
+            resultado = subprocess.check_output(["curl", "-s", "https://api.ipify.org"], timeout=5).decode().strip()
         ip_externo = resultado
     except Exception:
-        ip_externo = "Sem conexão ou timeout"
-
+        ip_externo = "Sem conexao ou timeout"
     print(f"  {SEPIA}{'Hostname':<18}{R}{CREAM}{hostname}{R}")
     print(f"  {SEPIA}{'IP Local':<18}{R}{GREEN}{ip_local}{R}")
     print(f"  {SEPIA}{'IP Externo':<18}{R}{GREEN}{ip_externo}{R}")
     pausar()
 
-
-# ──────────────────────────────────────────
-#  2. SCANNER DE PORTAS
-# ──────────────────────────────────────────
 def rede_scanner():
     limpar(); exibir_banner(); sep()
     print(f"  {BOLD}{AMBER}SCANNER DE PORTAS{R}\n")
-
     host = input(f"  {CREAM}Host alvo (ex: 192.168.1.1): {R}").strip()
     if not host:
-        print(f"  {DRED}Host inválido.{R}")
-        pausar(); return
-
+        print(f"  {DRED}Host invalido.{R}"); pausar(); return
     try:
         inicio = int(input(f"  {CREAM}Porta inicial (ex: 1): {R}").strip() or "1")
         fim    = int(input(f"  {CREAM}Porta final   (ex: 1024): {R}").strip() or "1024")
     except ValueError:
-        print(f"  {DRED}Porta inválida.{R}")
-        pausar(); return
-
-    print(f"\n  {GRAY}Escaneando {AMBER}{host}{GRAY} portas {inicio}─{fim}...{R}\n")
-    sep()
-
+        print(f"  {DRED}Porta invalida.{R}"); pausar(); return
+    print(f"\n  {GRAY}Escaneando {AMBER}{host}{GRAY} portas {inicio}-{fim}...{R}\n"); sep()
     abertas = []
     for porta in range(inicio, fim + 1):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(0.3)
-        resultado = s.connect_ex((host, porta))
-        if resultado == 0:
+        if s.connect_ex((host, porta)) == 0:
             abertas.append(porta)
             print(f"  {GREEN}[ABERTA]{R}  porta {AMBL}{porta}{R}")
         s.close()
-
     sep()
     if abertas:
         print(f"\n  {AMBER}Total de portas abertas: {GREEN}{len(abertas)}{R}")
     else:
-        print(f"\n  {GRAY}Nenhuma porta aberta encontrada no intervalo.{R}")
+        print(f"\n  {GRAY}Nenhuma porta aberta encontrada.{R}")
     pausar()
 
-
-# ──────────────────────────────────────────
-#  3. DISPOSITIVOS NA REDE (ARP)
-# ──────────────────────────────────────────
 def rede_dispositivos():
     limpar(); exibir_banner(); sep()
     print(f"  {BOLD}{AMBER}DISPOSITIVOS NA REDE{R}\n")
-    print(f"  {GRAY}Executando varredura ARP... aguarde.{R}\n")
-    sep()
-
-    if os.name == "nt":
-        # Windows: arp -a lista todos os dispositivos conhecidos
-        os.system("arp -a")
-    else:
-        # Linux/Mac
-        os.system("arp -n 2>/dev/null || ip neigh show")
-
+    print(f"  {GRAY}Executando varredura ARP... aguarde.{R}\n"); sep()
+    os.system("arp -a") if os.name == "nt" else os.system("arp -n 2>/dev/null || ip neigh show")
     sep()
     print(f"\n  {GRAY}Dica: execute como administrador para resultados completos.{R}")
     pausar()
 
-
-# ──────────────────────────────────────────
-#  4. TRACEROUTE
-# ──────────────────────────────────────────
 def rede_traceroute():
     limpar(); exibir_banner(); sep()
     print(f"  {BOLD}{AMBER}TRACEROUTE{R}\n")
-
     host = input(f"  {CREAM}Host de destino (ex: google.com): {R}").strip() or "google.com"
-    print(f"\n  {GRAY}Rastreando rota até {AMBER}{host}{GRAY}...{R}\n")
-    sep()
-
-    if os.name == "nt":
-        os.system(f"tracert {host}")
-    else:
-        os.system(f"traceroute {host}")
-
+    print(f"\n  {GRAY}Rastreando rota ate {AMBER}{host}{GRAY}...{R}\n"); sep()
+    os.system(f"tracert {host}") if os.name == "nt" else os.system(f"traceroute {host}")
     pausar()
 
-
-# ══════════════════════════════════════════
-#  OPÇÕES ORIGINAIS
-# ══════════════════════════════════════════
 def opcao_ping():
     limpar(); exibir_banner(); sep()
     print(f"  {BOLD}{AMBER}TESTE DE CONEXÃO{R}\n")
-    host = input(f"  {CREAM}Host (padrão 8.8.8.8): {R}").strip() or "8.8.8.8"
+    host = input(f"  {CREAM}Host (padrao 8.8.8.8): {R}").strip() or "8.8.8.8"
     print(f"\n  {GRAY}Pingando {AMBER}{host}{GRAY}...{R}\n"); sep()
     os.system(f"ping -c 3 {host}" if os.name != "nt" else f"ping -n 3 {host}")
     pausar()
@@ -350,8 +343,8 @@ def opcao_sistema():
     import platform
     for k, v in [
         ("Sistema",     platform.system()),
-        ("Versão",      platform.version()[:45]),
-        ("Máquina",     platform.machine()),
+        ("Versao",      platform.version()[:45]),
+        ("Maquina",     platform.machine()),
         ("Processador", platform.processor()[:45]),
         ("Python",      platform.python_version()),
         ("Hostname",    platform.node()),
@@ -364,7 +357,7 @@ def opcao_sobre():
     print(f"  {BOLD}{AMBER}SOBRE O PROGRAMA{R}\n")
     for k, v in [
         ("Nome",      "ALEK Menu Terminal"),
-        ("Versão",    "1.0.0"),
+        ("Versao",    "1.0.0"),
         ("Autor",     "Alek"),
         ("Linguagem", "Python 3"),
         ("Tema",      "Breaking Bad / Heisenberg"),
@@ -373,20 +366,13 @@ def opcao_sobre():
     print(f"\n  {GRAY}Menu interativo com estilo.{R}")
     pausar()
 
-
-# ══════════════════════════════════════════
-#  FUNCAO SECRETA  —  WW
-# ══════════════════════════════════════════
 def segredo_ww():
-    limpar()
-    exibir_banner()
-    sep()
+    limpar(); exibir_banner(); sep()
     print()
     morse = "--. .. - / .... ..- -... / .- .-.. . -.- -.-. --- -.. . -....- ..- .."
     print(f"  {AMBER}[ W W ]{R}")
     print()
     for ch in morse:
-        import sys, time
         sys.stdout.write(f"{AMBL}{ch}{R}")
         sys.stdout.flush()
         time.sleep(0.07)
@@ -399,13 +385,9 @@ def segredo_ww():
 
 def sair():
     limpar(); exibir_banner(); sep()
-    digitar(f"\n  {SEPIA}\"O negócio está encerrado.\" — Heisenberg{R}\n", delay=0.04)
+    digitar(f"\n  {SEPIA}\"O negocio esta encerrado.\" - Heisenberg{R}\n", delay=0.04)
     sep(); time.sleep(1); sys.exit(0)
 
-
-# ══════════════════════════════════════════
-#  MAIN
-# ══════════════════════════════════════════
 if __name__ == "__main__":
     try:
         tela_abertura()
